@@ -230,4 +230,4 @@ A cache is a small fast array of memory placed between the processor core and ma
 placed between the processor core and main memory. The purpose of a write buffer is to
 free the processor core and cache memory from the slow write time associated with writing
 to main memory.
-## 12.1 The Memory Hierarchy and Cache Memory:
+## 12.1 The Memory Hierarchy and Cache Memory
