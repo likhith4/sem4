@@ -231,3 +231,116 @@ placed between the processor core and main memory. The purpose of a write buffer
 free the processor core and cache memory from the slow write time associated with writing
 to main memory.
 ## 12.1 The Memory Hierarchy and Cache Memory
+- the innermost level of hierarchy is  the processor core . the memory is so tigthtly coupled to the processor  that in many ways its difficult to think of it as seperate from the processor. and this memory is register file.
+- at the primary level  memory components are connected to the processor core through dedicated  on chip interface also there is main memory at the primary level
+- at the secondary level secondary storage - large , slow , relativley inexpensive mass storage  devices . it is used to store unused portions of very large programs that do not fit in main memory
+- A cache may be incorporated between any level in the hierarchy where ther is a significant access time difference between memory components. a cache can imporve system performance  whenever such difference exists 
+![alt text](image-22.png)
+1. **Caches and Memory Management Units**
+if a cached  core suports virtual memory then it can be located between the core and the memory management unit (MMU) and physical memory.
+- A logical cache store data in vitual address space. and its located between MMU and processr
+- A physical cache stores  memory using physical address. and its located between MMU and main meory
+
+## 12.2 Cache Architecture
+- In the processor using the Von-Neuman architecuture there is single caceh used for instruction and data.this type of cache is called as unified cache. and it contains both instruction and data values.
+- In processor using Harvard Architecture  there are two caches: an instruction cacle (I cache ) and a data cache ( D-cache ) this type of cache is known as split cache
+1. **Basic Cache Architecture**
+has three main parts :
+  1. Directory store ( to hold the address identifying where the cache line was copied  from main memo. )
+  2. Data Section (the data read from the main meory is held here )
+  3. Status Information all thse of the cache memory are present for each cache line (status bits are sotred here )
+  ![alt text](image-23.png)
+2. **Basic Operation of Cache Controller**
+Cache controller is a hardware that copies code or data from main memo to cache memory automatically
+- it intercepts read and write memory requests before passing them on to the memoyr controller.
+- first , the controller uses the set index portion of the address to locate the cache lines within the cache memory. that might hold the requested data. this cache line contains the cache tag and status bits 
+- then it checks the valid bit to determine if the cache line is active and compares the cache tag to the tag field of the req. address. if both the status check and comparison succeed it is a cache hit. else its a cache miss.
+- on cache miss , the controller copies an entire cache line from main meory to cache memory and provides req. code or data to the processor  this is called cache line fill.
+- on cache hit the controlelr supplies the code or data directly from cache memory to  the processor , to do this it moves to the next step. which is to use the data index field of the address request to select the actual code or data in the cache line and provide it to the processor.
+3. **Relationship between cache and main memory.**
+In a directed mapped cache  each addressed location in main memory maps to single location in cache memory since mainmemory is larger that cache sometimes multiple address locate to same address in cache memory
+![alt text](image-24.png)
+the direct mapped cache is simple soltuion bu there is a desgin cost inherent in having a single location available to store a vlue from main meory.
+- DM are subject to high level thrashing 
+4. **Set Associativity**
+these are additional desing feature to reduce the frequency of thrashing  here the Cache memo. is divided into simple units called ways is still a 4 KB cache. however the set index ins not address more than one cache line - it pints to one cache line in each way
+
+**Associative cache**
+any main memory block can mapped into any cache line main memory address is divided into two groups which are tags and word bits. words are low - order bits and identifies the location of a word within a block and tags are high -order bits which identifies the block
+![alt text](image-25.png)
+if a miss occur CPU bring the block from the main memory to the cache if there is no free block in the corresponding set it replaces a block and put the new one 
+Disadvantages are : high cost of implementation
+5. **Write Buffer**
+```
++-------------------+
+|       CPU         |
++-------------------+
+         |
+         | Write Request
+         |
++-------------------+
+|   Write Buffer    |
++-------------------+
+|   Data Storage    |
++-------------------+
+         |
+         | Write to Memory
+         |
++-------------------+
+|     Main Memory   |
++-------------------+
+ Measuring Cache Efficiency
+  hit rate =
+(cache hits/
+memory requests)× 100
+```
+## 12.3 Cache Policies 
+1. replacement policiy
+2. write policy
+3. allocation policy 
+
+1. Replacement Policy
+  Cache line replacement policies determine which cache line to evict when a cache miss occurs and the cache is full. Here are the main cache line replacement policies:
+
+## First-In-First-Out (FIFO)
+
+In FIFO, the cache line that has been in the cache for the longest time is evicted first. It operates like a queue where the oldest line is at the head and the newest line is at the tail. On a miss, the line at the head is evicted and the new line is added at the tail.
+
+## Least Recently Used (LRU) 
+
+LRU evicts the cache line that has not been accessed for the longest time. It assumes that recently accessed lines are likely to be accessed again soon. LRU keeps track of the access order of lines and evicts the line that was accessed farthest in the past.
+
+## Least Frequently Used (LFU)
+
+LFU evicts the line that has been accessed the least number of times. It maintains a counter for each line indicating the access frequency. The line with the smallest counter value is evicted on a miss.
+
+## Random Replacement (RR)
+
+Random replacement evicts a random cache line when a miss occurs. It is simple to implement but does not consider access patterns.
+
+## Pseudo-LRU (PLRU)
+
+Pseudo-LRU approximates true LRU by tracking the relative order of lines using a binary tree. It requires fewer bits per set compared to true LRU.
+
+The choice of replacement policy depends on factors like implementation complexity, performance, and the expected access patterns of the workload. LRU is commonly used as it provides a good balance of performance and cost, while FIFO and random are simpler to implement in hardware.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
